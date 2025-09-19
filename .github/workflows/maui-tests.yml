@@ -31,16 +31,15 @@ jobs:
         run: dotnet restore
  
       - name: Bouw de applicatie
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore | tee run.log
         
-      - name: Voer unit tests uit met timing log naar test_results.trx
-        run: dotnet test --configuration Release --no-restore --no-build --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
-     
-      - name: Show TestResults structure
-        run: ls -R ./TestResults || true
+      - name: Run de applicatie
+        run: dotnet run --configuration Release --no-build | tee run.log
         
-      - name: Upload test results
+      - name: Upload build en run logs
         uses: actions/upload-artifact@v4
         with:
-          name: test-results
-          path: '**/TestResults/**/*.trx'
+          name: build-run-logs
+          path: |
+            build.log
+            run.log
