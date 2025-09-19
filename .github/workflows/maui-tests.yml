@@ -35,6 +35,9 @@ jobs:
         
       - name: Voer unit tests uit met timing log naar test_results.trx
         run: dotnet test --configuration Release --no-restore --no-build --logger "trx;LogFileName=test_results.trx" --collect:"XPlat Code Coverage"
+     
+      - name: Show TestResults structure
+        run: ls -R ./TestResults || true
         
       - name: Upload test results
         uses: actions/upload-artifact@v4
