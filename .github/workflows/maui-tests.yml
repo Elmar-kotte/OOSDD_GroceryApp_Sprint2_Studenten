@@ -5,12 +5,11 @@ on:
     branches:
       - main
       - develop
-      - infra/runner-toevoegen
-      - dev/UnitTesting
   pull_request:
     branches:
       - main
       - develop
+      - Release
  
 jobs:
   test:
