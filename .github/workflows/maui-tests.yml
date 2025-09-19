@@ -5,11 +5,11 @@ on:
     branches:
       - main
       - develop
-      - infra/runner-toevoegen
   pull_request:
     branches:
       - main
       - develop
+      - Release
  
 jobs:
   test:
@@ -30,7 +30,15 @@ jobs:
         run: dotnet restore
  
       - name: Bouw de applicatie
-        run: dotnet build --configuration Release --no-restore
- 
-      - name: Voer unit tests uit
-        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
+        run: dotnet build --configuration Release --no-restore | tee build.log
+        
+      - name: Run unit test
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --framework net8.0-maccatalyst | tee run.log
+        
+      - name: Upload build en run logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-run-logs
+          path: |
+            build.log
+            run.log
