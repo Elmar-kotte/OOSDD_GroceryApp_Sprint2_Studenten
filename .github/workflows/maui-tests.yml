@@ -32,9 +32,13 @@ jobs:
       - name: Bouw de applicatie
         run: dotnet build --configuration Release --no-restore | tee build.log
         
+      - name: Run unit test
+        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal --framework net8.0-maccatalyst | tee run.log
+        
       - name: Upload build en run logs
         uses: actions/upload-artifact@v4
         with:
           name: build-run-logs
           path: |
             build.log
+            run.log
